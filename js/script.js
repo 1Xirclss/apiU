@@ -38,3 +38,62 @@ function mostrarDatos(datos) {
 }
 //llamado incial para que se carguen los datos que vienen del servidor
 obetnerPersonas();
+
+
+
+
+
+
+
+//Agregar un nuevo registro
+const modal = document.getElementById("modal-agregar");
+const btnAgregar = document.getElementById("btnAbrirModal");
+const btnCerrar = document.getElementById("btnCerrarModal");
+
+btnAgregar.addEventListener("click" , () => {
+  modal.showModal(); //Abrir el modal al hacer click en el boton
+});
+
+
+btnCerrar.addEventListener("click" , () => {
+  modal.close(); //Cerrar Modal
+});
+
+//Agregar nuevo integrante desde el formulario
+document.getElementById("frmAgregar").addEventListener("submit", async e => {
+  e.preventDefault(); //"e" representa al evento "submit" evita que ele formularo se envie de golpe
+
+  //Capturar los valores del formulario
+const nombre = document.getElementById("nombre").value.trim();
+const apellido = document.getElementById("apellido").value.trim();
+const email = document.getElementById("email").value.trim();
+const edad = document.getElementById("edad").value.trim();
+
+//validacion basica
+if(!nombre || !apellido || !email || !edad){
+  alert("Complete todos los campos");
+  return; //evitar que el formulario se envie
+};
+
+//Llamamos a la API para enviar el usuario
+const respuesta = await fetch(API_URL, {
+  method: "POST", 
+  headers: {'Content-Type': 'application/json'}, 
+  body: JSON.stringify({nombre,apellido,email,edad})
+});
+
+if(respuesta.ok){
+  alert("El registro fue agregado correctamente");
+
+  //Limpiar el formulario y cerrar el modal
+  document.getElementById("frmAgregar").reset();
+  document.getElementById("frmAgregar").close();
+  //Recagar la tabla 
+  obetnerPersonas();
+}
+else{
+  alert("Hubo un error al agregar");
+}
+
+});
+
