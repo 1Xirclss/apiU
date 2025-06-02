@@ -1,0 +1,29 @@
+https://retoolapi.dev/EdlGOC/data
+See all available endpoints here (generated with json-server).
+Endpoint URL
+
+HTTP method endpoints
+
+GET
+/EdlGOC/data
+
+GET filter
+/EdlGOC/data?nombre=value
+
+GET by id
+/EdlGOC/data/1
+
+GET paginate
+/EdlGOC/data?_page=2&_limit=10
+
+POST
+/EdlGOC/data
+
+PUT
+/EdlGOC/data/1
+
+PATCH
+/EdlGOC/data/1
+
+DELETE
+/EdlGOC/data/1
