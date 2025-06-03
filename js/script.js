@@ -30,7 +30,7 @@ function mostrarDatos(datos) {
             <td>${persona.edad}</td>
             <td>
               <button>Editar</button>
-              <button>Eliminar</button>  
+              <button onClick="EliminarPersona(${persona.id})">Eliminar</button>  
             </td>
         </tr>
         `;
@@ -96,4 +96,24 @@ else{
 }
 
 });
+
+
+
+
+
+//Funcion para borrar registros
+async function EliminarPersona(id){
+  const confirmacion = confirm("¿Estas seguro que deseas borrar este registro?");
+
+  //Validamos si el usuario dijo que si desea borrar
+  if(confirmacion){
+    await fetch(`${API_URL}/${id}`, {method: "DELETE"});
+
+    //Recargamos la tabla para ver la eliminacion
+    obetnerPersonas();
+  }
+
+}
+  
+
 
