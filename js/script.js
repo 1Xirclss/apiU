@@ -29,7 +29,7 @@ function mostrarDatos(datos) {
             <td>${persona.email}</td>
             <td>${persona.edad}</td>
             <td>
-              <button>Editar</button>
+              <button onclick="AbrirModalEditar(${persona.id}, '${persona.nombre}','${persona.apellido}', '${persona.email}', '${persona.edad}')">Editar</button>
               <button onClick="EliminarPersona(${persona.id})">Eliminar</button>  
             </td>
         </tr>
@@ -114,6 +114,52 @@ async function EliminarPersona(id){
   }
 
 }
+
+//Proceso para editar un registro
+const modalEditar = document.getElementById("modal-editar");
+const btnCerrarEditar = document.getElementById("btnCerrarEditar")
   
+btnCerrarEditar.addEventListener("click", () =>{
+  modalEditar.close(); //Cerrar Modal de Editar
+});
 
+function AbrirModalEditar(id,nombre,apellido,email,edad){
+  //Se agregan los valores del registro en los input
+  document.getElementById("idEditar").value = id;
+  document.getElementById("nombreEditar").value = nombre;
+  document.getElementById("apellidoEditar").value = apellido;
+  document.getElementById("emailEditar").value = email;
+  document.getElementById("edadEditar").value = edad;
 
+  //Modal se abre despues de agregar los valores de los input
+  modalEditar.showModal();
+}
+
+document.getElementById("frmEditar").addEventListener("submit", async e =>{
+  e.preventDefault(); //Evita que el formulaio se envie
+
+  const id = document.getElementById("idEditar").value.trim();
+  const nombre = document.getElementById("nombreEditar").value.trim();
+  const apellido = document.getElementById("apellidoEditar").value.trim();
+  const email = document.getElementById("emailEditar").value.trim();
+  const edad = document.getElementById("edadEditar").value.trim();
+
+  if(!id|| !nombre|| !apellido||!email||!edad){
+    alert("Rellene todos los campos por favor");
+    return; //Evita que el codigo se siga ejecutando
+  }
+    //Llamada a la API
+    const respuesta = await fetch(`${API_URL}/${id}`,{
+      method: "PUT",
+      headers: {"Content-Type" : "application/json"},
+      body: JSON.stringify({edad,email,nombre,apellido})
+    });
+
+    if(respuesta.ok){
+      alert("Registro actualizado con exito"); //Confirmacion
+      modalEditar.close(); //Cerramos el modal
+      obetnerPersonas(); //Actualizamos la lista
+    }else{
+      alert("Hubo error al actualizar");
+    }
+});
